@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+
+        <!-- Packaging -->
+        <OutputType>Exe</OutputType>
+        <IsPackable>false</IsPackable>
+
+        <!-- Dependencies -->
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>12</LangVersion>
+
+        <!-- Flags -->
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <WarningsAsErrors>Nullable</WarningsAsErrors>
+
+        <!-- Security -->
+        <!-- CET compatibility MUST be disabled to allow building and running with Synthesis. -->
+        <CETCompat>false</CETCompat>
+
+        <!-- Code -->
+        <RootNamespace/>
+
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Mutagen.Bethesda.FormKeys.SkyrimSE" Version="3.4.0"/>
+        <PackageReference Include="Mutagen.Bethesda.Skyrim" Version="0.52.0"/>
+        <PackageReference Include="Mutagen.Bethesda.Synthesis" Version="0.35.3"/>
+    </ItemGroup>
+
+</Project>

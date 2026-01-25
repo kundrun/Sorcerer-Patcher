@@ -1,0 +1,8 @@
+{
+    "sdk": {
+        "version": "8.0.0",
+        "rollForward": "latestMinor",
+        "allowPrerelease": false,
+        "errorMessage": "You must use .NET 8 to build Synthesis patchers."
+    }
+}

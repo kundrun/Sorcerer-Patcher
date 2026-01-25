@@ -1,0 +1,13 @@
+{
+    "Nickname": "Sorcerer-Patcher-Reborn",
+    "Visibility": "Exclude",
+    "OneLineDescription": "Patcher for Sorcerer - A Staff and Scroll Overhaul.",
+    "LongDescription": "",
+    "PreferredAutoVersioning": "Default",
+    "RequiredMods": [
+        "Sorcerer.esp"
+    ],
+    "TargetedReleases": [
+        "SkyrimSE"
+    ]
+}
