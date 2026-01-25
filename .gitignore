@@ -1,0 +1,8 @@
+# IDE
+.idea/
+.run/
+*.user
+
+# Output
+*/bin/
+*/obj/
