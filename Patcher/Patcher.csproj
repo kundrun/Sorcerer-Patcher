@@ -30,4 +30,13 @@
         <PackageReference Include="Mutagen.Bethesda.Synthesis" Version="0.35.3"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Compile Update="Lookups.cs">
+            <DependentUpon>Patcher.cs</DependentUpon>
+        </Compile>
+        <Compile Update="SoulGemPatcher.cs">
+            <DependentUpon>Patcher.cs</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
 </Project>
