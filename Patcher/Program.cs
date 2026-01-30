@@ -7,6 +7,7 @@ internal static class Program
     public static Task<int> Main(string[] args)
     {
         return SynthesisPipeline.Instance
+            .AddRunnabilityCheck(state => state.LoadOrder.AssertListsMods(ModKeys.Mysticism, ModKeys.Sorcerer))
             .AddPatch<ISkyrimMod, ISkyrimModGetter>(state => new Patcher(state).Run())
             .SetTypicalOpen(GameRelease.SkyrimSE, ModKeys.DefaultOutput)
             .Run(args);
