@@ -6,5 +6,7 @@ internal partial class Patcher(IPatcherState<ISkyrimMod, ISkyrimModGetter> _stat
     internal void Run()
     {
         PatchSoulGemRecords();
+
+        PatchStaffRecords();
     }
 }

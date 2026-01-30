@@ -14,6 +14,23 @@ internal static class ModKeys
 
 internal static class FormKeys
 {
+    internal static class KYWD
+    {
+        internal static readonly FormKey WeapTypeStaff           = Skyrim.Keyword.WeapTypeStaff.FormKey;
+        internal static readonly FormKey MagicDisallowEnchanting = Skyrim.Keyword.MagicDisallowEnchanting.FormKey;
+        internal static readonly FormKey DaedricArtifact         = Skyrim.Keyword.DaedricArtifact.FormKey;
+    }
+
+    internal static class MGEF
+    {
+        internal static readonly FormKey StaffEnchConcAimed      = ModKeys.Mysticism.MakeFormKey(0xF4F8BD);
+        internal static readonly FormKey StaffEnchConcActor      = ModKeys.Mysticism.MakeFormKey(0xF549C6);
+        internal static readonly FormKey StaffEnchFFAimed        = ModKeys.Mysticism.MakeFormKey(0xF4F8B8);
+        internal static readonly FormKey StaffEnchFFActor        = ModKeys.Mysticism.MakeFormKey(0xF4F8BA);
+        internal static readonly FormKey StaffEnchFFLocation     = ModKeys.Mysticism.MakeFormKey(0xF4F8B9);
+        internal static readonly FormKey StaffEnchFFLocationRune = ModKeys.Mysticism.MakeFormKey(0xF549C5);
+    }
+
     internal static class SLGM
     {
         internal static readonly FormKey Petty               = Skyrim.SoulGem.SoulGemPetty.FormKey;

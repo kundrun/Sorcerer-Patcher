@@ -37,6 +37,9 @@
         <Compile Update="SoulGemPatcher.cs">
             <DependentUpon>Patcher.cs</DependentUpon>
         </Compile>
+        <Compile Update="StaffPatcher.cs">
+            <DependentUpon>Patcher.cs</DependentUpon>
+        </Compile>
     </ItemGroup>
 
 </Project>
