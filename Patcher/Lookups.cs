@@ -1,5 +1,6 @@
 using Mutagen.Bethesda.FormKeys.SkyrimSE;
 using Mutagen.Bethesda.Plugins;
+using Mutagen.Bethesda.Skyrim;
 
 using static Utilities;
 
@@ -92,5 +93,29 @@ internal partial class Patcher
             < 75  => 1500,
             < 100 => 3000,
             _     => 5000
+        };
+
+    private static ushort StaffEnchantCosts(uint skillLevel) =>
+        skillLevel switch
+        {
+            < 25  => 20,
+            < 50  => 30,
+            < 75  => 60,
+            < 100 => 120,
+            _     => 250
+        };
+
+    private static FormKey StaffEnchantMarkerEffects(IObjectEffectGetter staffEnchant) =>
+        staffEnchant switch
+        {
+            { CastType: CastType.Concentration, TargetType: TargetType.Aimed }       => FormKeys.MGEF.StaffEnchConcAimed,
+            { CastType: CastType.Concentration, TargetType: TargetType.TargetActor } => FormKeys.MGEF.StaffEnchConcActor,
+            { CastType: CastType.FireAndForget, TargetType: TargetType.Aimed }       => FormKeys.MGEF.StaffEnchFFAimed,
+            { CastType: CastType.FireAndForget, TargetType: TargetType.TargetActor } => FormKeys.MGEF.StaffEnchFFActor,
+            { CastType: CastType.FireAndForget, TargetType: TargetType.TargetLocation } =>
+                staffEnchant.EditorID?.Contains("Rune") != true
+                    ? FormKeys.MGEF.StaffEnchFFLocation
+                    : FormKeys.MGEF.StaffEnchFFLocationRune,
+            _ => FormKey.Null
         };
 }

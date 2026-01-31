@@ -4,11 +4,11 @@ using Mutagen.Bethesda.Skyrim;
 
 internal partial class Patcher
 {
-    private void PatchStaffRecords()
+    private void PatchStaffRecords(out IEnumerable<StaffInfo> staffInfoList)
     {
         Console.WriteLine("Processing staves.");
 
-        var staffEnchantPrimaryEffects = new Dictionary<FormKey, IMagicEffectGetter>();
+        var staffEnchantInfoLookup = new Dictionary<FormKey, StaffInfo>();
 
         var staves = _state.LoadOrder.PriorityOrder.Weapon().WinningOverrides()
             .Where(x => !ExcludedStaffMods.Contains(x.FormKey.ModKey))
@@ -25,19 +25,19 @@ internal partial class Patcher
 
         foreach (var staff in staves)
         {
-            if (!staffEnchantPrimaryEffects.TryGetValue(staff.ObjectEffect.FormKey, out var primaryEffect))
+            if (!staffEnchantInfoLookup.TryGetValue(staff.ObjectEffect.FormKey, out var staffInfo))
             {
-                primaryEffect = GetPrimaryEffect(staff.ObjectEffect.FormKey);
-                if (primaryEffect == null)
+                staffInfo = GetStaffInfo(staff.ObjectEffect.FormKey);
+                if (staffInfo == null)
                 {
                     continue;
                 }
-                staffEnchantPrimaryEffects.Add(staff.ObjectEffect.FormKey, primaryEffect);
+                staffEnchantInfoLookup.Add(staff.ObjectEffect.FormKey, staffInfo);
             }
 
             Weapon? patchedStaff = null;
 
-            var expectedEnchantAmount = StaffEnchantAmounts(primaryEffect.MinimumSkillLevel);
+            var expectedEnchantAmount = StaffEnchantAmounts(staffInfo.SkillLevel);
 
             if (expectedEnchantAmount != staff.EnchantmentAmount)
             {
@@ -50,14 +50,22 @@ internal partial class Patcher
                 Console.WriteLine($">>> Patched staff {staff.EditorID}.");
             }
         }
+
+        staffInfoList = staffEnchantInfoLookup.Values.ToArray();
     }
 
-    private IMagicEffectGetter? GetPrimaryEffect(FormKey staffEnchantKey)
+    private StaffInfo? GetStaffInfo(FormKey staffEnchantKey)
     {
         var staffEnchant = TryResolve<IObjectEffectGetter>(staffEnchantKey);
 
-        return staffEnchant?.Effects
+        var primaryEffect = staffEnchant?.Effects
             .Select(x => TryResolve(x.BaseEffect))
             .MaxBy(x => x?.BaseCost);
+
+        return primaryEffect != null
+            ? new StaffInfo(staffEnchant!, primaryEffect.MinimumSkillLevel)
+            : null;
     }
+
+    private record StaffInfo(IObjectEffectGetter Enchant, uint SkillLevel);
 }

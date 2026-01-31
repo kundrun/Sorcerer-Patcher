@@ -7,6 +7,7 @@ internal partial class Patcher(IPatcherState<ISkyrimMod, ISkyrimModGetter> _stat
     {
         PatchSoulGemRecords();
 
-        PatchStaffRecords();
+        PatchStaffRecords(out var staffInfoList);
+        PatchStaffEnchantmentRecords(staffInfoList);
     }
 }
