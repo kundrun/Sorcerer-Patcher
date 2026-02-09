@@ -19,6 +19,9 @@ internal static class FormKeys
         internal static readonly FormKey WeapTypeStaff           = Skyrim.Keyword.WeapTypeStaff.FormKey;
         internal static readonly FormKey MagicDisallowEnchanting = Skyrim.Keyword.MagicDisallowEnchanting.FormKey;
         internal static readonly FormKey DaedricArtifact         = Skyrim.Keyword.DaedricArtifact.FormKey;
+
+        internal static readonly FormKey StaffEnchanterWorkbenchSkyrim   = Dragonborn.Keyword.DLC2StaffEnchanter.FormKey;
+        internal static readonly FormKey StaffEnchanterWorkbenchSorcerer = ModKeys.Sorcerer.MakeFormKey(0x065D0A);
     }
 
     internal static class MGEF
@@ -29,6 +32,11 @@ internal static class FormKeys
         internal static readonly FormKey StaffEnchFFActor        = ModKeys.Mysticism.MakeFormKey(0xF4F8BA);
         internal static readonly FormKey StaffEnchFFLocation     = ModKeys.Mysticism.MakeFormKey(0xF4F8B9);
         internal static readonly FormKey StaffEnchFFLocationRune = ModKeys.Mysticism.MakeFormKey(0xF549C5);
+    }
+
+    internal static class MISC
+    {
+        internal static readonly FormKey HeartStone = Dragonborn.MiscItem.DLC2HeartStone.FormKey;
     }
 
     internal static class SLGM

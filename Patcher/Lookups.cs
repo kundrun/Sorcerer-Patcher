@@ -118,4 +118,14 @@ internal partial class Patcher
                     : FormKeys.MGEF.StaffEnchFFLocationRune,
             _ => FormKey.Null
         };
+
+    private static (FormKey SoulGemType, int SoulGemQuantity) StaffRecipeDetails(uint skillLevel) =>
+        skillLevel switch
+        {
+            < 25  => (FormKeys.SLGM.CommonFilled, 1),
+            < 50  => (FormKeys.SLGM.GreaterFilled, 1),
+            < 75  => (FormKeys.SLGM.GrandFilled, 1),
+            < 100 => (FormKeys.SLGM.GrandFilled, 2),
+            _     => (FormKeys.SLGM.GrandFilled, 3)
+        };
 }

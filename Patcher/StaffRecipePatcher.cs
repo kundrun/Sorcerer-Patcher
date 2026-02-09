@@ -1,0 +1,67 @@
+using Mutagen.Bethesda;
+using Mutagen.Bethesda.Plugins;
+using Mutagen.Bethesda.Skyrim;
+
+using Noggog;
+
+internal partial class Patcher
+{
+    private void PatchStaffRecipeRecords(IDictionary<FormKey, uint> staffSkillLevels)
+    {
+        Console.WriteLine("Processing staff recipes.");
+
+        var staffKeysWithExistingAltRecipes = _state.LoadOrder.PriorityOrder.ConstructibleObject().WinningOverrides()
+            .Where(x => x.WorkbenchKeyword.FormKey == FormKeys.KYWD.StaffEnchanterWorkbenchSorcerer)
+            .Select(x => x.CreatedObject.FormKey);
+
+        var originalRecipes = _state.LoadOrder.PriorityOrder.ConstructibleObject().WinningOverrides()
+            .Where(x => x.WorkbenchKeyword.FormKey == FormKeys.KYWD.StaffEnchanterWorkbenchSkyrim)
+            .ExceptBy(staffKeysWithExistingAltRecipes, x => x.CreatedObject.FormKey);
+
+        foreach (var originalRecipe in originalRecipes)
+        {
+            if (!staffSkillLevels.TryGetValue(originalRecipe.CreatedObject.FormKey, out var skillLevel))
+            {
+                continue;
+            }
+
+            CreateStaffRecipe(originalRecipe, skillLevel);
+        }
+    }
+
+    private void CreateStaffRecipe(IConstructibleObjectGetter originalRecipe, uint skillLevel)
+    {
+        var recipeEditorId = originalRecipe.EditorID + "Alt";
+
+        if (_state.LinkCache.TryResolve<IConstructibleObjectGetter>(recipeEditorId, out _))
+        {
+            Console.WriteLine($">>> Skipped staff recipe {recipeEditorId} because it already exists.");
+            return;
+        }
+
+        var recipeDetails = StaffRecipeDetails(skillLevel);
+
+        var recipe = _state.PatchMod.ConstructibleObjects.AddNew(recipeEditorId);
+        recipe.WorkbenchKeyword = FormKeys.KYWD.StaffEnchanterWorkbenchSorcerer.ToNullableLink<IKeywordGetter>();
+        recipe.CreatedObject = originalRecipe.CreatedObject.FormKey.ToNullableLink<IConstructibleGetter>();
+        recipe.CreatedObjectCount = originalRecipe.CreatedObjectCount;
+        recipe.Conditions.AddRange(originalRecipe.Conditions.Select(x => x.DeepCopy()));
+        recipe.Items = new ExtendedList<ContainerEntry>(
+            originalRecipe.Items
+                .EmptyIfNull()
+                .Where(x => !x.Item.Item.FormKey.Equals(FormKeys.MISC.HeartStone))
+                .Select(x => x.DeepCopy())
+                .Append(new ContainerEntry
+                    {
+                        Item = new ContainerItem
+                        {
+                            Item = recipeDetails.SoulGemType.ToLink<IItemGetter>(),
+                            Count = recipeDetails.SoulGemQuantity
+                        }
+                    }
+                )
+        );
+
+        Console.WriteLine($">>> Created staff recipe {recipe.EditorID}.");
+    }
+}

@@ -4,11 +4,12 @@ using Mutagen.Bethesda.Skyrim;
 
 internal partial class Patcher
 {
-    private void PatchStaffRecords(out IEnumerable<StaffInfo> staffInfoList)
+    private void PatchStaffRecords(out IEnumerable<StaffInfo> staffInfoList, out IDictionary<FormKey, uint> staffSkillLevels)
     {
         Console.WriteLine("Processing staves.");
 
         var staffEnchantInfoLookup = new Dictionary<FormKey, StaffInfo>();
+        staffSkillLevels = new Dictionary<FormKey, uint>();
 
         var staves = _state.LoadOrder.PriorityOrder.Weapon().WinningOverrides()
             .Where(x => !ExcludedStaffMods.Contains(x.FormKey.ModKey))
@@ -34,6 +35,7 @@ internal partial class Patcher
                 }
                 staffEnchantInfoLookup.Add(staff.ObjectEffect.FormKey, staffInfo);
             }
+            staffSkillLevels.Add(staff.FormKey, staffInfo.SkillLevel);
 
             Weapon? patchedStaff = null;
 
