@@ -46,6 +46,9 @@
         <Compile Update="StaffRecipePatcher.cs">
             <DependentUpon>StaffPatcher.cs</DependentUpon>
         </Compile>
+        <Compile Update="ScrollPatcher.cs">
+            <DependentUpon>Patcher.cs</DependentUpon>
+        </Compile>
     </ItemGroup>
 
 </Project>

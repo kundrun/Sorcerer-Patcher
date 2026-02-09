@@ -1,3 +1,4 @@
+using Mutagen.Bethesda;
 using Mutagen.Bethesda.FormKeys.SkyrimSE;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Skyrim;
@@ -127,5 +128,45 @@ internal partial class Patcher
             < 75  => (FormKeys.SLGM.GrandFilled, 1),
             < 100 => (FormKeys.SLGM.GrandFilled, 2),
             _     => (FormKeys.SLGM.GrandFilled, 3)
+        };
+
+    private static readonly IReadOnlySet<ModKey> ExcludedScrollMods = new HashSet<ModKey>
+    {
+        Dragonborn.ModKey,
+        ModKey.FromNameAndExtension("Arachnomancy.esp"),
+        ModKey.FromNameAndExtension("ShowRaceMenuAlternative.esp")
+    };
+
+    private static readonly IReadOnlySet<FormKey> ExcludedScrollKeys = new HashSet<FormKey>
+    {
+        Skyrim.Scroll.MGRJzargo1Scroll.FormKey,
+        Skyrim.Scroll.MGR21ScrollDestruction.FormKey,
+        Skyrim.Scroll.MGR21ScrollIllusion.FormKey,
+        Skyrim.Scroll.MGR21ScrollAlteration.FormKey,
+        Skyrim.Scroll.MGR21ScrollRestoration.FormKey,
+        Skyrim.Scroll.MGR21ScrollConjuration.FormKey,
+        Skyrim.Scroll.MGR21ScrollMagicka.FormKey
+    };
+
+    private static uint ScrollValues(uint skillLevel) =>
+        skillLevel switch
+        {
+            < 25  => 15,
+            < 50  => 30,
+            < 75  => 55,
+            < 100 => 100,
+            _     => 160
+        };
+
+    private static FormKey ScrollSkills(ActorValue magicSkill) =>
+        magicSkill switch
+        {
+            // Injected records from Mysticism.esp into Update.esm
+            ActorValue.Alteration  => Update.ModKey.MakeFormKey(0xADA151),
+            ActorValue.Conjuration => Update.ModKey.MakeFormKey(0xADA152),
+            ActorValue.Destruction => Update.ModKey.MakeFormKey(0xADA153),
+            ActorValue.Illusion    => Update.ModKey.MakeFormKey(0xADA154),
+            ActorValue.Restoration => Update.ModKey.MakeFormKey(0xADA155),
+            _                      => FormKey.Null
         };
 }
