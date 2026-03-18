@@ -4,9 +4,11 @@ using Mutagen.Bethesda.Skyrim;
 
 internal partial class Patcher
 {
-    private void PatchScrollRecords()
+    private void PatchScrollRecords(out IDictionary<FormKey, ScrollInfo> scrollInfoLookup)
     {
         Console.WriteLine("Processing scrolls.");
+
+        scrollInfoLookup = new Dictionary<FormKey, ScrollInfo>();
 
         var scrolls = _state.LoadOrder.PriorityOrder.Scroll().WinningOverrides()
             .Where(x => !ExcludedScrollMods.Contains(x.FormKey.ModKey))
@@ -20,6 +22,7 @@ internal partial class Patcher
             {
                 continue;
             }
+            scrollInfoLookup.Add(scroll.FormKey, scrollInfo);
 
             Scroll? patchedScroll = null;
 
@@ -53,9 +56,9 @@ internal partial class Patcher
             .MaxBy(x => x?.BaseCost);
 
         return primaryEffect != null
-            ? new ScrollInfo(primaryEffect.MinimumSkillLevel, primaryEffect.MagicSkill)
+            ? new ScrollInfo(scroll.Name?.String ?? string.Empty, primaryEffect.MinimumSkillLevel, primaryEffect.MagicSkill)
             : null;
     }
 
-    private record ScrollInfo(uint SkillLevel, ActorValue MagicSkill);
+    private record ScrollInfo(string Name, uint SkillLevel, ActorValue MagicSkill);
 }

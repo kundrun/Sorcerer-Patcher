@@ -169,4 +169,24 @@ internal partial class Patcher
             ActorValue.Restoration => Update.ModKey.MakeFormKey(0xADA155),
             _                      => FormKey.Null
         };
+
+    private static uint ScrollResearchNotesValues(uint skillLevel) =>
+        skillLevel switch
+        {
+            < 25  => 100,
+            < 50  => 200,
+            < 75  => 300,
+            < 100 => 500,
+            _     => 800
+        };
+
+    private static (int PaperQuantity, int InkQuantity, ushort ScrollQuantity) ScrollRecipeDetails(uint skillLevel) =>
+        skillLevel switch
+        {
+            < 25  => (5, 2, 5),
+            < 50  => (4, 3, 4),
+            < 75  => (3, 4, 3),
+            < 100 => (2, 5, 2),
+            _     => (2, 8, 2)
+        };
 }

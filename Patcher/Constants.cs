@@ -20,8 +20,11 @@ internal static class FormKeys
         internal static readonly FormKey MagicDisallowEnchanting = Skyrim.Keyword.MagicDisallowEnchanting.FormKey;
         internal static readonly FormKey DaedricArtifact         = Skyrim.Keyword.DaedricArtifact.FormKey;
 
-        internal static readonly FormKey StaffEnchanterWorkbenchSkyrim   = Dragonborn.Keyword.DLC2StaffEnchanter.FormKey;
-        internal static readonly FormKey StaffEnchanterWorkbenchSorcerer = ModKeys.Sorcerer.MakeFormKey(0x065D0A);
+        internal static readonly FormKey StaffEnchanterWorkbenchSkyrim    = Dragonborn.Keyword.DLC2StaffEnchanter.FormKey;
+        internal static readonly FormKey StaffEnchanterWorkbenchSorcerer  = ModKeys.Sorcerer.MakeFormKey(0x065D0A);
+        internal static readonly FormKey ScrollEnchanterWorkbenchSorcerer = ModKeys.Sorcerer.MakeFormKey(0x02901F);
+
+        internal static readonly FormKey ScrollResearchNotes = ModKeys.Sorcerer.MakeFormKey(0x029023);
     }
 
     internal static class MGEF
@@ -36,7 +39,9 @@ internal static class FormKeys
 
     internal static class MISC
     {
-        internal static readonly FormKey HeartStone = Dragonborn.MiscItem.DLC2HeartStone.FormKey;
+        internal static readonly FormKey HeartStone   = Dragonborn.MiscItem.DLC2HeartStone.FormKey;
+        internal static readonly FormKey EnchantedInk = ModKeys.Sorcerer.MakeFormKey(0x02902A);
+        internal static readonly FormKey ScrollPaper  = ModKeys.Sorcerer.MakeFormKey(0x02902B);
     }
 
     internal static class SLGM
@@ -68,5 +73,15 @@ internal static class FormKeys
         internal static readonly FormKey BlackFilledGreater  = ModKeys.YASTM.MakeFormKey(0x00082D);
         internal static readonly FormKey BlackFilledWhite    = ModKeys.YASTM.MakeFormKey(0x000838);
         internal static readonly FormKey BlackFilled         = Skyrim.SoulGem.SoulGemBlackFilled.FormKey;
+    }
+
+    internal static class SNDR
+    {
+        internal static readonly FormKey NotePickUp = Skyrim.SoundDescriptor.ITMNoteUp.FormKey;
+    }
+
+    internal static class STAT
+    {
+        internal static readonly FormKey ResearchItemScroll = ModKeys.Sorcerer.MakeFormKey(0x03323C);
     }
 }

@@ -11,6 +11,7 @@ internal partial class Patcher(IPatcherState<ISkyrimMod, ISkyrimModGetter> _stat
         PatchStaffEnchantmentRecords(staffInfoList);
         PatchStaffRecipeRecords(staffSkillLevels);
 
-        PatchScrollRecords();
+        PatchScrollRecords(out var scrollInfoLookup);
+        PatchScrollRecipeRecords(scrollInfoLookup);
     }
 }
