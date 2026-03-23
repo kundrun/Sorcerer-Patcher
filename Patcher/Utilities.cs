@@ -8,6 +8,12 @@ internal static class Utilities
     {
         return ModKey.FromNameAndExtension(modKey).MakeFormKey(formId);
     }
+
+    public static IEnumerable<TSource> WhereIf<TSource>(
+        this IEnumerable<TSource> source, Func<TSource, bool> predicate, Func<bool> condition)
+    {
+        return condition() ? source.Where(predicate) : source;
+    }
 }
 
 internal partial class Patcher

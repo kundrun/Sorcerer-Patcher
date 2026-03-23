@@ -11,6 +11,9 @@ internal partial class Patcher
         scrollInfoLookup = new Dictionary<FormKey, ScrollInfo>();
 
         var scrolls = _state.LoadOrder.PriorityOrder.Scroll().WinningOverrides()
+            .WhereIf(x => _config.ModsToPatch.Contains(x.FormKey.ModKey),
+                     () => _config.ModsToPatch.Count > 0)
+            .Where(x => _config.ExcludedScrolls.All(y => x.FormKey != y.FormKey))
             .Where(x => !ExcludedScrollMods.Contains(x.FormKey.ModKey))
             .Where(x => !ExcludedScrollKeys.Contains(x.FormKey))
             .Where(x => x.EditorID is { } editorId &&

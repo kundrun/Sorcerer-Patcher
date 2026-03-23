@@ -7,7 +7,9 @@ internal partial class Patcher
     {
         Console.WriteLine("Processing soul gems.");
 
-        var soulGems = _state.LoadOrder.PriorityOrder.SoulGem().WinningOverrides();
+        var soulGems = _state.LoadOrder.PriorityOrder.SoulGem().WinningOverrides()
+            .WhereIf(x => _config.ModsToPatch.Contains(x.FormKey.ModKey),
+                     () => _config.ModsToPatch.Count > 0);
         foreach (var soulGem in soulGems)
         {
             if (!SoulGemValues.TryGetValue(soulGem.FormKey, out var expectedValue) ||

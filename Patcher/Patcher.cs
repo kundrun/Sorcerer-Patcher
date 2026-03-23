@@ -1,7 +1,7 @@
 using Mutagen.Bethesda.Skyrim;
 using Mutagen.Bethesda.Synthesis;
 
-internal partial class Patcher(IPatcherState<ISkyrimMod, ISkyrimModGetter> _state)
+internal partial class Patcher(IPatcherState<ISkyrimMod, ISkyrimModGetter> _state, UserConfig _config)
 {
     internal void Run()
     {

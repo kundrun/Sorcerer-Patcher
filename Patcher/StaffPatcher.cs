@@ -12,6 +12,9 @@ internal partial class Patcher
         staffSkillLevels = new Dictionary<FormKey, uint>();
 
         var staves = _state.LoadOrder.PriorityOrder.Weapon().WinningOverrides()
+            .WhereIf(x => _config.ModsToPatch.Contains(x.FormKey.ModKey),
+                     () => _config.ModsToPatch.Count > 0)
+            .Where(x => _config.ExcludedStaves.All(y => x.FormKey != y.FormKey))
             .Where(x => !ExcludedStaffMods.Contains(x.FormKey.ModKey))
             .Where(x => !ExcludedStaffKeys.Contains(x.FormKey))
             .Where(x => x.EditorID is { } editorId &&
