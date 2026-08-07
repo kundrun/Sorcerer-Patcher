@@ -44,7 +44,7 @@ internal partial class Patcher
             if (!expectedSkill.IsNull && !scroll.HasKeyword(expectedSkill))
             {
                 patchedScroll ??= _state.PatchMod.Scrolls.GetOrAddAsOverride(scroll);
-                (patchedScroll.Keywords ?? []).Add(expectedSkill);
+                (patchedScroll.Keywords ??= []).Add(expectedSkill);
             }
 
             if (patchedScroll != null)
