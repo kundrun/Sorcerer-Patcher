@@ -2,6 +2,8 @@ using Mutagen.Bethesda;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Skyrim;
 
+using Noggog;
+
 internal partial class Patcher
 {
     private void PatchScrollRecords(out IDictionary<FormKey, ScrollInfo> scrollInfoLookup)
@@ -56,7 +58,9 @@ internal partial class Patcher
     {
         var primaryEffect = scroll.Effects
             .Select(x => TryResolve(x.BaseEffect))
-            .MaxBy(x => x?.BaseCost);
+            .WhereNotNull()
+            .Where(x => x.EditorID == null || !(x.EditorID.Contains("Dummy") || x.EditorID.Contains("XP")))
+            .MaxBy(x => x.BaseCost);
 
         return primaryEffect != null
             ? new ScrollInfo(scroll.Name?.String ?? string.Empty, primaryEffect.MinimumSkillLevel, primaryEffect.MagicSkill)

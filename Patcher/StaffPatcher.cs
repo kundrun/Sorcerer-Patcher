@@ -2,6 +2,8 @@ using Mutagen.Bethesda;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Skyrim;
 
+using Noggog;
+
 internal partial class Patcher
 {
     private void PatchStaffRecords(out IEnumerable<StaffInfo> staffInfoList, out IDictionary<FormKey, uint> staffSkillLevels)
@@ -65,7 +67,9 @@ internal partial class Patcher
 
         var primaryEffect = staffEnchant?.Effects
             .Select(x => TryResolve(x.BaseEffect))
-            .MaxBy(x => x?.BaseCost);
+            .WhereNotNull()
+            .Where(x => x.EditorID == null || !(x.EditorID.Contains("Dummy") || x.EditorID.Contains("XP")))
+            .MaxBy(x => x.BaseCost);
 
         return primaryEffect != null
             ? new StaffInfo(staffEnchant!, primaryEffect.MinimumSkillLevel)
