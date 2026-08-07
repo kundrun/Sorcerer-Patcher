@@ -154,7 +154,7 @@ internal partial class Patcher
             < 25  => 15,
             < 50  => 30,
             < 75  => 55,
-            < 100 => 100,
+            < 100 => 90,
             _     => 160
         };
 
@@ -175,9 +175,9 @@ internal partial class Patcher
         {
             < 25  => 100,
             < 50  => 200,
-            < 75  => 300,
-            < 100 => 500,
-            _     => 800
+            < 75  => 400,
+            < 100 => 600,
+            _     => 1000
         };
 
     private static (int PaperQuantity, int InkQuantity, ushort ScrollQuantity) ScrollRecipeDetails(uint skillLevel) =>
