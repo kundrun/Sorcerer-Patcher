@@ -28,16 +28,15 @@ internal partial class Patcher
             {
                 patchedStaffEnchant ??= _state.PatchMod.ObjectEffects.GetOrAddAsOverride(staffEnchant);
                 patchedStaffEnchant.Effects.Add(new Effect
+                {
+                    BaseEffect = markerEffectKey.ToNullableLink<IMagicEffectGetter>(),
+                    Data = new EffectData
                     {
-                        BaseEffect = markerEffectKey.ToNullableLink<IMagicEffectGetter>(),
-                        Data = new EffectData
-                        {
-                            Magnitude = 0.0f,
-                            Duration = 0,
-                            Area = 0
-                        }
+                        Magnitude = 0.0f,
+                        Duration = 0,
+                        Area = 0
                     }
-                );
+                });
             }
 
             if (patchedStaffEnchant != null)

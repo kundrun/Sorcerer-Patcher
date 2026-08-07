@@ -52,15 +52,13 @@ internal partial class Patcher
                 .Where(x => !x.Item.Item.FormKey.Equals(FormKeys.MISC.HeartStone))
                 .Select(x => x.DeepCopy())
                 .Append(new ContainerEntry
+                {
+                    Item = new ContainerItem
                     {
-                        Item = new ContainerItem
-                        {
-                            Item = recipeDetails.SoulGemType.ToLink<IItemGetter>(),
-                            Count = recipeDetails.SoulGemQuantity
-                        }
+                        Item = recipeDetails.SoulGemType.ToLink<IItemGetter>(),
+                        Count = recipeDetails.SoulGemQuantity
                     }
-                )
-        );
+                }));
 
         Console.WriteLine($">>> Created staff recipe {recipe.EditorID}.");
     }
