@@ -46,9 +46,9 @@ internal partial class Patcher
         recipe.CreatedObject = originalRecipe.CreatedObject.FormKey.ToNullableLink<IConstructibleGetter>();
         recipe.CreatedObjectCount = originalRecipe.CreatedObjectCount;
         recipe.Conditions.AddRange(originalRecipe.Conditions.Select(x => x.DeepCopy()));
-        recipe.Items = new ExtendedList<ContainerEntry>(
-            originalRecipe.Items
-                .EmptyIfNull()
+        if (originalRecipe.Items != null)
+        {
+            recipe.Items = originalRecipe.Items
                 .Where(x => !x.Item.Item.FormKey.Equals(FormKeys.MISC.HeartStone))
                 .Select(x => x.DeepCopy())
                 .Append(new ContainerEntry
@@ -58,7 +58,9 @@ internal partial class Patcher
                         Item = recipeDetails.SoulGemType.ToLink<IItemGetter>(),
                         Count = recipeDetails.SoulGemQuantity
                     }
-                }));
+                })
+                .ToExtendedList();
+        }
 
         Console.WriteLine($">>> Created staff recipe {recipe.EditorID}.");
     }
