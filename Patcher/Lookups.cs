@@ -65,11 +65,6 @@ internal partial class Patcher
         Skyrim.Weapon.dunRannveigSildsStaff.FormKey,                   // Sild's Staff
         Dawnguard.Weapon.DLC1LD_AetherialStaff.FormKey,                // Aetherial Staff
         Dawnguard.Weapon.DLC1RuunvaldStaff.FormKey,                    // Staff of Ruunvald
-        Dragonborn.Weapon.DLC2MiraakStaff.FormKey,                     // Miraak's Staff
-        Dragonborn.Weapon.DLC2MKMiraakStaff1.FormKey,                  // Miraak's Staff
-        Dragonborn.Weapon.DLC2MKMiraakStaff2.FormKey,                  // Miraak's Staff
-        Dragonborn.Weapon.DLC2MKMiraakStaff3.FormKey,                  // Miraak's Staff
-        Dragonborn.Weapon.DLC2MKMiraakStaffTentacles1.FormKey,         // Miraak's Staff
         MakeFormKey("ccbgssse040-advobgobs.esl",            0x000805), // Goblin Totem Staff
         MakeFormKey("ccbgssse067-daedinv.esm",              0x147D9F), // Staff of Ehlno Ede
         MakeFormKey("ccbgssse019-staffofsheogorath.esl",    0x000D62), // Staff of Sheogorath
@@ -132,6 +127,7 @@ internal partial class Patcher
 
     private static readonly IReadOnlySet<ModKey> ExcludedScrollMods = new HashSet<ModKey>
     {
+        Dawnguard.ModKey,
         Dragonborn.ModKey,
         ModKey.FromNameAndExtension("Arachnomancy.esp"),
         ModKey.FromNameAndExtension("ShowRaceMenuAlternative.esp")
