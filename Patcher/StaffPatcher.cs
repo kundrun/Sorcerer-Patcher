@@ -6,12 +6,14 @@ using Noggog;
 
 internal partial class Patcher
 {
-    private void PatchStaffRecords(out IEnumerable<StaffInfo> staffInfoList, out IDictionary<FormKey, uint> staffSkillLevels)
+    private void PatchStaffRecords(
+        out IDictionary<FormKey, StaffInfo> staffInfoLookup,
+        out IEnumerable<StaffEnchantInfo> staffEnchantInfoList)
     {
         Console.WriteLine("Processing staves.");
 
-        var staffEnchantInfoLookup = new Dictionary<FormKey, StaffInfo>();
-        staffSkillLevels = new Dictionary<FormKey, uint>();
+        staffInfoLookup = new Dictionary<FormKey, StaffInfo>();
+        var staffEnchantInfoLookup = new Dictionary<FormKey, StaffEnchantInfo>();
 
         var staves = _state.LoadOrder.PriorityOrder.Weapon().WinningOverrides()
             .WhereIf(x => _config.ModsToPatch.Contains(x.FormKey.ModKey),
@@ -31,20 +33,20 @@ internal partial class Patcher
 
         foreach (var staff in staves)
         {
-            if (!staffEnchantInfoLookup.TryGetValue(staff.ObjectEffect.FormKey, out var staffInfo))
+            if (!staffEnchantInfoLookup.TryGetValue(staff.ObjectEffect.FormKey, out var staffEnchantInfo))
             {
-                staffInfo = GetStaffInfo(staff.ObjectEffect.FormKey);
-                if (staffInfo == null)
+                staffEnchantInfo = GetStaffEnchantInfo(staff.ObjectEffect.FormKey);
+                if (staffEnchantInfo == null)
                 {
                     continue;
                 }
-                staffEnchantInfoLookup.Add(staff.ObjectEffect.FormKey, staffInfo);
+                staffEnchantInfoLookup.Add(staff.ObjectEffect.FormKey, staffEnchantInfo);
             }
-            staffSkillLevels.Add(staff.FormKey, staffInfo.SkillLevel);
+            staffInfoLookup.Add(staff.FormKey, new StaffInfo(staffEnchantInfo.SkillLevel));
 
             Weapon? patchedStaff = null;
 
-            var expectedEnchantAmount = StaffEnchantAmounts(staffInfo.SkillLevel);
+            var expectedEnchantAmount = StaffEnchantAmounts(staffEnchantInfo.SkillLevel);
 
             if (expectedEnchantAmount != staff.EnchantmentAmount)
             {
@@ -58,10 +60,10 @@ internal partial class Patcher
             }
         }
 
-        staffInfoList = staffEnchantInfoLookup.Values.ToArray();
+        staffEnchantInfoList = staffEnchantInfoLookup.Values.ToArray();
     }
 
-    private StaffInfo? GetStaffInfo(FormKey staffEnchantKey)
+    private StaffEnchantInfo? GetStaffEnchantInfo(FormKey staffEnchantKey)
     {
         var staffEnchant = TryResolve<IObjectEffectGetter>(staffEnchantKey);
 
@@ -72,9 +74,11 @@ internal partial class Patcher
             .MaxBy(x => x.BaseCost);
 
         return primaryEffect != null
-            ? new StaffInfo(staffEnchant!, primaryEffect.MinimumSkillLevel)
+            ? new StaffEnchantInfo(staffEnchant!, primaryEffect.MinimumSkillLevel)
             : null;
     }
 
-    private record StaffInfo(IObjectEffectGetter Enchant, uint SkillLevel);
+    private record StaffInfo(uint SkillLevel);
+
+    private record StaffEnchantInfo(IObjectEffectGetter Enchant, uint SkillLevel);
 }

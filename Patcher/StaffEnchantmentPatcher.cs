@@ -3,11 +3,11 @@ using Mutagen.Bethesda.Skyrim;
 
 internal partial class Patcher
 {
-    private void PatchStaffEnchantmentRecords(IEnumerable<StaffInfo> staffInfoList)
+    private void PatchStaffEnchantmentRecords(IEnumerable<StaffEnchantInfo> staffEnchantInfoList)
     {
         Console.WriteLine("Processing staff enchantments.");
 
-        foreach (var (staffEnchant, staffSkillLevel) in staffInfoList)
+        foreach (var (staffEnchant, staffSkillLevel) in staffEnchantInfoList)
         {
             ObjectEffect? patchedStaffEnchant = null;
 

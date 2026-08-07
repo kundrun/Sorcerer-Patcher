@@ -6,7 +6,7 @@ using Noggog;
 
 internal partial class Patcher
 {
-    private void PatchStaffRecipeRecords(IDictionary<FormKey, uint> staffSkillLevels)
+    private void PatchStaffRecipeRecords(IDictionary<FormKey, StaffInfo> staffInfoLookup)
     {
         Console.WriteLine("Processing staff recipes.");
 
@@ -20,16 +20,14 @@ internal partial class Patcher
 
         foreach (var originalRecipe in originalRecipes)
         {
-            if (!staffSkillLevels.TryGetValue(originalRecipe.CreatedObject.FormKey, out var skillLevel))
+            if (staffInfoLookup.TryGetValue(originalRecipe.CreatedObject.FormKey, out var staffInfo))
             {
-                continue;
+                CreateStaffRecipe(staffInfo, originalRecipe);
             }
-
-            CreateStaffRecipe(originalRecipe, skillLevel);
         }
     }
 
-    private void CreateStaffRecipe(IConstructibleObjectGetter originalRecipe, uint skillLevel)
+    private void CreateStaffRecipe(StaffInfo staffInfo, IConstructibleObjectGetter originalRecipe)
     {
         var recipeEditorId = originalRecipe.EditorID + "Alt";
 
@@ -39,7 +37,7 @@ internal partial class Patcher
             return;
         }
 
-        var recipeDetails = StaffRecipeDetails(skillLevel);
+        var recipeDetails = StaffRecipeDetails(staffInfo.SkillLevel);
 
         var recipe = _state.PatchMod.ConstructibleObjects.AddNew(recipeEditorId);
         recipe.WorkbenchKeyword = FormKeys.KYWD.StaffEnchanterWorkbenchSorcerer.ToNullableLink<IKeywordGetter>();
