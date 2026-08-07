@@ -11,7 +11,7 @@ internal partial class Patcher
         foreach (var (scrollKey, scrollInfo) in scrollInfoLookup)
         {
             var extractedName = scrollInfo.Name.Replace("Scroll of the ", "").Replace("Scroll of ", "");
-            var extractedId = extractedName.Replace(" ", "");
+            var extractedId = extractedName.Replace(" ", "").Replace("'", "");
 
             var researchPerk = CreateScrollResearchPerk(extractedName, extractedId);
             var researchNotes = CreateScrollResearchNotes(extractedName, extractedId, scrollInfo, researchPerk);
