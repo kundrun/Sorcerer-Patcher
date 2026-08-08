@@ -1,9 +1,9 @@
 {
-    "Nickname": "Sorcerer-Patcher-Reborn",
-    "Visibility": "Exclude",
+    "Nickname": "Sorcerer Patcher",
+    "Visibility": "Visible",
     "OneLineDescription": "Patcher for Sorcerer - A Staff and Scroll Overhaul.",
     "LongDescription": "",
-    "PreferredAutoVersioning": "Default",
+    "PreferredAutoVersioning": "LatestTag",
     "RequiredMods": [
         "Sorcerer.esp"
     ],
